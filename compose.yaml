@@ -1,0 +1,16 @@
+services:
+  signage:
+    build: .
+    ports: ["18081:18081"]
+    environment:
+      PORT: 18081
+      SIGNAGE_API_KEY: ${SIGNAGE_API_KEY:-zhuatech-demo-key}
+      SIGNAGE_DATA_FILE: /app/data/signage.json
+    volumes: ["signage-data:/app/data"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:18081/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+volumes:
+  signage-data:
